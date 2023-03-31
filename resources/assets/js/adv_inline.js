@@ -19,7 +19,7 @@ $('document').ready(function () {
 
         tinymce.init(window.voyagerTinyMCE.getConfig(additionalConfig))
         const editor = tinymce.get(id)
-        editor.settings.min_height = min_height
+        // editor.settings.min_height = min_height
     }
 
     // ------------------------------
