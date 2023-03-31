@@ -2,6 +2,7 @@
 
 namespace MonstreX\VoyagerExtension;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -79,7 +80,9 @@ class VoyagerExtensionServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        if (env('FORCE_SSL', false) === true) {
+            URL::forceScheme('https');
+        }
         if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
         }
