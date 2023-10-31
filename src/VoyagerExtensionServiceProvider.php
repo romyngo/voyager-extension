@@ -80,7 +80,7 @@ class VoyagerExtensionServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (env('FORCE_SSL', false) === true) {
+        if (config('custom.force_ssl') === true) {
             URL::forceScheme('https');
         }
         if ($this->app->runningInConsole()) {
