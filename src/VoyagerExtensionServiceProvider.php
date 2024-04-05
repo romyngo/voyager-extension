@@ -145,15 +145,18 @@ class VoyagerExtensionServiceProvider extends ServiceProvider
         }
 
         // Add CSS and JS to the Voyager's config
-        Config::set(
-            'voyager.additional_css',
-            array_merge(config('voyager.additional_css'), [voyager_extension_asset('css/app.css')])
-        );
-
-        Config::set(
-            'voyager.additional_js',
-            array_merge(config('voyager.additional_js'), [voyager_extension_asset('js/app.js')])
-        );
+        if (!in_array(voyager_extension_asset('css/app.css'), config('voyager.additional_css'))) {
+            Config::set(
+                'voyager.additional_css',
+                array_merge(config('voyager.additional_css'), [voyager_extension_asset('css/app.css')])
+            );
+        }
+        if (!in_array(voyager_extension_asset('js/app.js'), config('voyager.additional_js'))) {
+            Config::set(
+                'voyager.additional_js',
+                array_merge(config('voyager.additional_js'), [voyager_extension_asset('js/app.js')])
+            );
+        }
     }
 
     /**
