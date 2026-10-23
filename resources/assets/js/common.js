@@ -3,7 +3,12 @@
 // ------------------------------
 var trans = function(key, replace = {})
 {
-    var translation = key.split('.').reduce((t, i) => t[i] || null, window.translations);
+    var translation = key.split('.').reduce((t, i) => (t == null ? null : (t[i] || null)), window.translations);
+
+    // Translations may not be loaded yet (or failed to load) - fall back to the key itself
+    if (translation === null) {
+        translation = key;
+    }
 
     for (var placeholder in replace) {
         translation = translation.replace(`:${placeholder}`, replace[placeholder]);
@@ -204,11 +209,13 @@ var readURL = function (input)
 // ------------------------------
 window.translations = {};
 $.get(`/${window.rootAdminRoute}/voyager-extension-translations`, null, function (data) {
-    if (data) {
+    if (data && typeof data === 'object') {
         window.translations = data;
     } else {
         toastr.error(vext.trans('bread.error_translation_loading'));
     }
+}).fail(function () {
+    toastr.error(vext.trans('bread.error_translation_loading'));
 });
 
 $('document').ready(function () {
