@@ -39,6 +39,13 @@ class VoyagerExtensionServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // Merge package config BEFORE boot(): routes and the register() code below
+        // read config('voyager-extension.*') and must see the defaults even if the
+        // app has not published the config file (or published an older version).
+        $this->mergeConfigFrom(
+            dirname(__DIR__).'/publishable/config/voyager-extension.php', 'voyager-extension'
+        );
+
         $loader = AliasLoader::getInstance();
         $loader->alias('VE', Facades\VoyagerExtension::class);
 
@@ -129,10 +136,6 @@ class VoyagerExtensionServiceProvider extends ServiceProvider
      */
     private function loadConfig()
     {
-
-        $this->mergeConfigFrom(
-            dirname(__DIR__).'/publishable/config/voyager-extension.php', 'voyager-extension'
-        );
 
         // Add custom Path generator for medialibrary files if enabled
         if (config('voyager-extension.use_media_path_generator')) {
